@@ -7,19 +7,23 @@
 
 ## In /static/index.html
 * This is used to show off the admin website of the game.
-* This can be viewed by going to the local ip address entered by the admin user on port 8000 i.e. http://{{LOCAL IP}}:8000 [Note: Change the ip address in index.html on 12 to your local ip before viewing!]
+* This can be viewed by going to the local ip address entered by the admin user on port 8000 i.e. http://{{LOCAL IP}}:8000 [Note: Change the ip address in index.html to your local ip before viewing! It is only refrenced once.]
 * This page keeps track of the players stats and updates the admin website to reflect the stats of the game in real time.
 * It retrieves its data by making an api call to the server side.
 
 ## Setup
 * Install node js from [Node Website](http://nodejs.org/)
 * Install nodemon by running this in your terminal:
-      npm install -g nodemon
+      `npm install -g nodemon`
 * Install all npm dependencies by running this in your terminal: [npm will install all dependencies required in our package.json]
-      npm install
+      `npm install`
 
 ### To start the server in your terminal:
-      nodemon server.js
+      `nodemon server.js`
 
 #### To stop the server:
 * control c in the terminal 
+
+# Future Development
+* Automated server deployment
+* Hosting server from iOS device
