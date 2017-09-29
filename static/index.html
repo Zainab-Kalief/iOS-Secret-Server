@@ -33,7 +33,7 @@
           if(response.total) console.log('total scores are:', response.total);
           $('.total').empty()
           for (score of response.total) {
-            let content = '<p>' + score.name + ' has ' + score.score + '</p>'
+            let content = '<p><span>' + score.name + ' </span><span class="score"> ' + score.score + '</span></p>'
             $('.total').append(content)
           }
 
@@ -41,27 +41,33 @@
           setInterval(updateData, 5000)
     })
     </script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <style media="screen">
-      button{
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50% -50%);
-        text-align: center;
-      }
+
     </style>
   </head>
   <body>
     <h1>Laser Tag</h1>
 
-  <h3>Players</h3>
-  <div class="players"> </div>
+    <h3>Players</h3>
+    <div class="players">
+      <p>Pikachu</p>
+      <p>Lemonfrog</p>
+      <p>Sleepy</p>
+    </div>
 
-  <h3>Game Logs</h3>
-  <div class="logs">  </div>
+    <h3>Game Logs</h3>
+    <div class="logs">
+      <p>Someone shot someone else</p>
+      <p>Someone shot themselves</p>
+      <p>A pokemon shot another pokemon</p>
+    </div>
 
-  <h3>Score Board</h3>
-  <div class="total"> </div>
-
+    <h3>Score Board</h3>
+    <div class="total">
+      <p><span>Pikachu</span><span class="score">8</span></p>
+      <p><span>Nameless </span><span class="score">12</span></p>
+      <p><span>Unnamed </span><span class="score">2</span></p>
+    </div>
   </body>
 </html>

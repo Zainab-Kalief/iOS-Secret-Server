@@ -4,26 +4,25 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const body_parser = require('body-parser')
-const path = require('path')
 app.use(body_parser.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, './static')))
 app.use(body_parser.json())
 //**********//
 
+function storage() {
+  //**********//
+  //~~~~~~DATA STORAGE~~~~~~//
+  var players = [] //creates players as they add thier join game
+  var db = [] //main db
+  var gameStatus = true //shuts off others from joining the game once it has began
 
-//**********//
-//~~~~~~DATA STORAGE~~~~~~//
-var players = [] //creates players as they add thier join game
-var db = [] //main db
-var gameStatus = true //shuts off others from joining the game once it has began
+  //~~~~~~backend admin variables~~~~~~//
+  var gameLogs = []
+  var gameTotalRaw = {}
+  var gameTotalFormatted = []
+  //**********//
+}
 var dbCopy = [] //used to store db before it resets
-
-//~~~~~~backend admin variables~~~~~~//
-var gameLogs = []
-var gameTotalRaw = {}
-var gameTotalFormatted = []
-//**********//
-
 
 //**********//
 //~~~~~~API CALLS~~~~~~//
@@ -94,19 +93,17 @@ io.sockets.on('connection', function (socket) {
 
     setTimeout( () => { //first warning
       io.emit('timeWarning', 60)
-      console.log('60 seconds left');
+      console.log('60 seconds left', 'with total seconds spent:', Number(time) - 10000);
     }, Number(time) - 60000)
     setTimeout( () => { //second warning
       io.emit('timeWarning', 10)
-      console.log('10 seconds left');
+      console.log('10 seconds left', 'with total seconds spent:', Number(time) - 10000);
     }, Number(time) - 10000)
     setTimeout(function () { //end game
       io.emit("gameOver", db)
       console.log("End the game after this time");
-      dbCopy = db
-      players = []
-      db = []
-      gameStatus = true
+      storage()
+      socket.disconnect()
     }, Number(time)) //the admin player determines when the game ends
 
   })
