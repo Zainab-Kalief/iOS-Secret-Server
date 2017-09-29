@@ -9,20 +9,19 @@ app.use(express.static(path.join(__dirname, './static')))
 app.use(body_parser.json())
 //**********//
 
-function storage() {
-  //**********//
-  //~~~~~~DATA STORAGE~~~~~~//
-  var players = [] //creates players as they add thier join game
-  var db = [] //main db
-  var gameStatus = true //shuts off others from joining the game once it has began
-
-  //~~~~~~backend admin variables~~~~~~//
-  var gameLogs = []
-  var gameTotalRaw = {}
-  var gameTotalFormatted = []
-  //**********//
-}
+//**********//
+//~~~~~~DATA STORAGE~~~~~~//
+var players = [] //creates players as they add thier join game
+var db = [] //main db
+var gameStatus = true //shuts off others from joining the game once it has began
 var dbCopy = [] //used to store db before it resets
+
+//~~~~~~backend admin variables~~~~~~//
+var gameLogs = []
+var gameTotalRaw = {}
+var gameTotalFormatted = []
+//**********//
+
 
 //**********//
 //~~~~~~API CALLS~~~~~~//
@@ -75,11 +74,11 @@ io.sockets.on('connection', function (socket) {
 
     for (var i = 0; i < players.length; i++) { //create the db
       if(i == 0) {
-        db.push({name: players[i], targets: {}, status: true}) //establish admin player who will also be the first user
+        db.push({name: players[i], targets: {}, status: true}) //establish admin player who will also be the first player
       } else {
         db.push({name: players[i], targets: {}, status: false})
       }
-      gameTotalRaw[players[i]] = 0
+      gameTotalRaw[players[i]] = 0 //create data for server api call
     }
 
     for (user of db) {
@@ -100,16 +99,22 @@ io.sockets.on('connection', function (socket) {
       console.log('10 seconds left', 'with total seconds spent:', Number(time) - 10000);
     }, Number(time) - 10000)
     setTimeout(function () { //end game
+      dbCopy = db
       io.emit("gameOver", db)
-      console.log("End the game after this time");
-      storage()
+      console.log("Game Over!!!!");
+
+      players = []
+      db = []
+      gameStatus = true
+      console.log("Game is resetted");
+
       socket.disconnect()
-    }, Number(time)) //the admin player determines when the game ends
+    }, Number(time)) //the admin player determines when the game ends by setting the time
 
   })
 
 
-  //3 players fire shots
+  //3 players fire shots to other playeres
   socket.on("shotsFired", function (data) {
     for (user of db) {
       if(user.name == data.shooter) {
