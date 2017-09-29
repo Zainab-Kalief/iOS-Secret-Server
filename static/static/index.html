@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+    <script type="text/javascript">
+      $(document).ready(  function () {
+
+          function updateData() {
+            var request = new XMLHttpRequest()
+            request.open('get', 'http://192.168.1.86:8000/stat', false)
+            request.setRequestHeader("Content-type", "application/json")
+            request.send()
+            var response = JSON.parse(request.responseText)
+
+            if (response.status) { //this flips once the game starts
+              $('.players').empty()
+              for (user of response.team) {
+                let content = '<p>' + user + '</p>'
+                $('.players').append(content)
+              }
+              console.log(response.team);
+            }
+
+          if(response.logs) console.log('logs are:', response.logs);
+          $('.logs').empty()
+          for (log of response.logs) {
+            let content = '<li>' + log + '</li>'
+            $('.logs').append(content)
+          }
+
+          if(response.total) console.log('total scores are:', response.total);
+          $('.total').empty()
+          for (score of response.total) {
+            let content = '<p><span>' + score.name + ' </span><span class="score"> ' + score.score + '</span></p>'
+            $('.total').append(content)
+          }
+
+          }
+          setInterval(updateData, 1000)
+    })
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,800|Roboto:400,500i,900,900i" rel="stylesheet">
+    <style media="screen">
+      body{
+        font-family: 'Roboto', sans-serif;
+        background-color: #ff5e16;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      h2, h3{
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 800;
+      }
+
+      h1{
+        font-style: italic;
+        font-weight: 900;
+        font-size: 4em;
+        margin:0;
+        color: black;
+      }
+
+      .head {
+        background-color: #fee650;
+        margin-top: 0;
+        padding:1em;
+
+      }
+
+      .main {
+        display: flex;
+        flex-direction: row;
+        padding: 3em 1em 1em 1em;
+        align-items: center;
+        justify-content: center;
+        margin:0;
+      }
+
+      .wrapper{
+        background-color: #04f9cc;
+        padding: 0 1em 1em 1em;
+        margin: 0 1em 0 1em;
+        border-radius: 2em;
+        overflow: hidden;
+      }
+      .wrapper h3{
+        background-color: #fee650;
+        margin: 0 -1em 0 -1em;
+        padding: 1em 0;
+      }
+      .total p{
+        margin-left: 1em;
+      }
+
+      .score{
+        margin-left: 0.5em;
+        background-color: #fee650;
+        padding: 0.3em;
+        border-radius: 3em;
+        font-weight: bold;
+      }
+
+      .logs{
+        text-align: left;
+        padding-right: 1em;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="head">
+      <h1>LAZER TAG</h1>
+    </div>
+    <div class="main">
+      <div class="wrapper">
+        <h3>Players</h3>
+        <div class="players">
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <h3>Game Logs</h3>
+        <ul class="logs">
+        </ul>
+      </div>
+
+      <div class="wrapper">
+      <h3>Score Board</h3>
+      <div class="total">
+      </div>
+    </div>
+  </body>
+</html>
